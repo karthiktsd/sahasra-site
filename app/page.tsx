@@ -347,9 +347,9 @@ export default function BusinessBuyerProfilePage() {
               <ul className="space-y-2 text-sm">
                 {[
                   "B2B services (recurring or repeat purchase)",
-                  "Essential local services",
-                  "Light manufacturing / distribution",
-                  "Asset-light, people-led businesses",
+"Mechanical & electrical services (HVAC, electrical contracting, fire & life safety)",
+"Engineering-led services businesses (maintenance, installation, testing & inspection)",
+"Specialist technical / compliance-driven services (statutory testing, certification, asset care)",
                 ].map((t) => (
                   <li key={t} className="flex items-start gap-2">
                     <CheckCircle2 className="h-4 w-4 mt-0.5 text-slate-700" />
