@@ -1,0 +1,659 @@
+import React from "react";
+import { motion } from "framer-motion";
+import {
+  Building2,
+  CheckCircle2,
+  Handshake,
+  LineChart,
+  Mail,
+  MapPin,
+  Phone,
+  Search,
+  ShieldCheck,
+  Timer,
+} from "lucide-react";
+
+type SectionProps = {
+  id: string;
+  title: string;
+  subtitle?: string;
+  children: React.ReactNode;
+};
+
+const Section = ({ id, title, subtitle, children }: SectionProps) => (
+  <section id={id} className="scroll-mt-24">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-14">
+      <div className="mb-8">
+        <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-900">
+          {title}
+        </h2>
+        {subtitle ? (
+          <p className="mt-2 text-slate-600 max-w-2xl">{subtitle}</p>
+        ) : null}
+      </div>
+      {children}
+    </div>
+  </section>
+);
+
+type PillProps = {
+  children: React.ReactNode;
+};
+
+const Pill = ({ children }: PillProps) => (
+  <span className="inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700 shadow-sm">
+    {children}
+  </span>
+);
+
+type CardProps = {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  children: React.ReactNode;
+};
+
+const Card = ({ icon: Icon, title, children }: CardProps) => (
+  <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="flex items-start gap-3">
+      <div className="mt-0.5 rounded-xl border border-slate-200 bg-slate-50 p-2">
+        <Icon className="h-5 w-5 text-slate-700" />
+      </div>
+      <div>
+        <h3 className="font-semibold text-slate-900">{title}</h3>
+        <div className="mt-2 text-slate-600 leading-relaxed">{children}</div>
+      </div>
+    </div>
+  </div>
+);
+
+type NavLinkProps = {
+  href: string;
+  children: React.ReactNode;
+};
+
+const NavLink = ({ href, children }: NavLinkProps) => (
+  <a
+    href={href}
+    className="text-sm font-medium text-slate-700 hover:text-slate-900"
+  >
+    {children}
+  </a>
+);
+
+// Data used in a few places, exported for easy testing/validation.
+export const SAHASRA_SECTIONS = [
+  { id: "about", label: "About" },
+  { id: "criteria", label: "Acquisition criteria" },
+  { id: "value", label: "What I bring" },
+  { id: "process", label: "Process" },
+  { id: "contact", label: "Contact" },
+] as const;
+
+// Lightweight "tests" that can run in a Jest/Vitest environment.
+// They won't affect production.
+if (typeof process !== "undefined" && process.env?.NODE_ENV === "test") {
+  const ids = SAHASRA_SECTIONS.map((s) => s.id);
+  const unique = new Set(ids);
+  if (unique.size !== ids.length) throw new Error("Duplicate section IDs");
+}
+
+export default function BusinessBuyerProfilePage() {
+  const year = new Date().getFullYear();
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-900">
+      {/* Top bar */}
+      <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+          <a href="#top" className="flex items-center gap-2">
+            <div className="h-9 w-9 rounded-xl border border-slate-200 bg-slate-50 flex items-center justify-center">
+              <Building2 className="h-5 w-5 text-slate-700" />
+            </div>
+            <div>
+              <div className="text-sm font-semibold leading-none">Sahasra</div>
+              <div className="text-xs text-slate-600">
+                Responsible owner of small UK businesses
+              </div>
+            </div>
+          </a>
+
+          <nav className="hidden md:flex items-center gap-6">
+            {SAHASRA_SECTIONS.map((s) => (
+              <NavLink key={s.id} href={`#${s.id}`}>
+                {s.label}
+              </NavLink>
+            ))}
+          </nav>
+
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800"
+          >
+            <Mail className="h-4 w-4" />
+            Get in touch
+          </a>
+        </div>
+      </header>
+
+      {/* Hero */}
+      <main id="top">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-14 pb-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+            <div className="lg:col-span-7">
+              <motion.h1
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="text-3xl sm:text-5xl font-semibold tracking-tight"
+              >
+                I acquire great small businesses and support their next chapter.
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.08 }}
+                className="mt-4 text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl"
+              >
+                I'm looking to acquire a stable, founder-led business where I can
+                protect what works, ensure continuity, and grow responsibly. If you're
+                a founder considering succession, I'd love to talk.
+              </motion.p>
+
+              <div className="mt-6 flex flex-wrap gap-2">
+                <Pill>
+                  <Search className="h-4 w-4 mr-2" />
+                  UK-based acquisitions
+                </Pill>
+                <Pill>
+                  <Handshake className="h-4 w-4 mr-2" />
+                  Founder-friendly transitions
+                </Pill>
+                <Pill>
+                  <ShieldCheck className="h-4 w-4 mr-2" />
+                  Confidential • respectful
+                </Pill>
+                <Pill>
+                  <Timer className="h-4 w-4 mr-2" />
+                  Fast, clear process
+                </Pill>
+              </div>
+
+              <div className="mt-8 flex flex-col sm:flex-row gap-3">
+                <a
+                  href="#criteria"
+                  className="inline-flex items-center justify-center rounded-xl bg-white border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm hover:bg-slate-50"
+                >
+                  See acquisition criteria
+                </a>
+                <a
+                  href="#contact"
+                  className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-slate-800"
+                >
+                  Share an opportunity
+                </a>
+              </div>
+
+              <div className="mt-8 text-xs text-slate-500">
+                Tip: This page is designed for brokers, founders, and advisors. You
+                can share it as a single link.
+              </div>
+            </div>
+
+            <div className="lg:col-span-5">
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.12 }}
+                className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="h-12 w-12 rounded-2xl border border-slate-200 bg-slate-50 flex items-center justify-center">
+                    <LineChart className="h-6 w-6 text-slate-700" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold">At a glance</div>
+                    <div className="text-xs text-slate-600">
+                      What I'm looking for
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    <div className="text-xs text-slate-600">Revenue</div>
+                    <div className="mt-1 text-base font-semibold">£0.5m - £2.0m</div>
+                    <div className="mt-1 text-xs text-slate-500">
+                      Flexible depending on quality
+                    </div>
+                  </div>
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    <div className="text-xs text-slate-600">EBITDA</div>
+                    <div className="mt-1 text-base font-semibold">£0.1m - £0.5m</div>
+                    <div className="mt-1 text-xs text-slate-500">
+                      Profitable or clearly profitable path
+                    </div>
+                  </div>
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    <div className="text-xs text-slate-600">Geography</div>
+                    <div className="mt-1 text-base font-semibold">
+                      South East, London, South West & Midlands
+                    </div>
+                    <div className="mt-1 text-xs text-slate-500">Open to nationwide</div>
+                  </div>
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                    <div className="text-xs text-slate-600">Deal type</div>
+                    <div className="mt-1 text-base font-semibold">
+                      Full buyout / majority
+                    </div>
+                    <div className="mt-1 text-xs text-slate-500">
+                      Minority considered case-by-case
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 rounded-2xl border border-slate-200 p-4">
+                  <div className="text-sm font-semibold">Preference</div>
+                  <ul className="mt-2 space-y-2 text-sm text-slate-600">
+                    {[
+                      "Succession / retirement situations",
+                      "Strong recurring customers or repeat purchase",
+                      "Great team + reputation in the local market",
+                      "Simple operations; no heavy turnaround required",
+                    ].map((t) => (
+                      <li key={t} className="flex items-start gap-2">
+                        <CheckCircle2 className="h-4 w-4 mt-0.5 text-slate-700" />
+                        <span>{t}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+
+        {/* About */}
+        <Section
+          id="about"
+          title="About"
+          subtitle="A quick introduction for founders, brokers, and intermediaries."
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="lg:col-span-7 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <p className="text-slate-600 leading-relaxed">
+                Sahasra is led by Karthik Tammana and is based in Reading, UK. Karthik brings over 13 years of experience across operating roles in large corporates and management consulting, where he has advised leadership teams on strategy, growth, operations, and value creation. His background combines hands-on operating exposure with a strong analytical and commercial foundation, enabling a calm, practical approach to ownership focused on continuity, disciplined growth, and long-term business health.
+              </p>
+
+              <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <div className="text-xs text-slate-600">Background</div>
+                  <div className="mt-1 text-sm font-semibold">
+                    Strategy, operations & value creation • 13+ years
+                  </div>
+                  <div className="mt-1 text-xs text-slate-500">
+                    Experience spanning operating roles and advisory work across complex, real-world businesses
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <div className="text-xs text-slate-600">Focus</div>
+                  <div className="mt-1 text-sm font-semibold">
+                    Responsible ownership & continuity
+                  </div>
+                  <div className="mt-1 text-xs text-slate-500">
+                    process, pricing, sales, people, digital
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 rounded-2xl border border-slate-200 p-4">
+                <div className="text-sm font-semibold">What matters to me</div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {[
+                    "Integrity",
+                    "Team stability",
+                    "Customer trust",
+                    "Low drama",
+                    "Sustainable growth",
+                  ].map((x) => (
+                    <Pill key={x}>{x}</Pill>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 grid gap-4">
+              <Card icon={ShieldCheck} title="Confidential & respectful">
+                I understand discretion. I will sign an NDA early, and I'll be mindful
+                of staff, customers, and reputation throughout.
+              </Card>
+              <Card icon={Handshake} title="Founder-friendly transitions">
+                I'm happy to work around your preferred timeline and structure - e.g.,
+                staged handover, consulting period, or a clean exit.
+              </Card>
+            </div>
+          </div>
+        </Section>
+
+        {/* Criteria */}
+        <Section
+          id="criteria"
+          title="Acquisition criteria"
+          subtitle="A clear target profile to help you qualify opportunities quickly."
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <Card icon={Building2} title="Business types">
+              <ul className="space-y-2 text-sm">
+                {[
+                  "B2B services (recurring or repeat purchase)",
+                  "Essential local services",
+                  "Light manufacturing / distribution",
+                  "Asset-light, people-led businesses",
+                ].map((t) => (
+                  <li key={t} className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 mt-0.5 text-slate-700" />
+                    <span>{t}</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+
+            <Card icon={LineChart} title="Financial profile">
+              <ul className="space-y-2 text-sm">
+                {[
+                  "Profitable with stable cash flows",
+                  "Strong gross margin / pricing power preferred",
+                  "Low customer concentration preferred",
+                  "Clean books and clear unit economics",
+                ].map((t) => (
+                  <li key={t} className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 mt-0.5 text-slate-700" />
+                    <span>{t}</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+
+            <Card icon={MapPin} title="Geography">
+              <ul className="space-y-2 text-sm">
+                {[
+                  "UK-focused (open to nationwide)",
+                  "Preference: South East, London, South West & Midlands",
+                ].map((t) => (
+                  <li key={t} className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 mt-0.5 text-slate-700" />
+                    <span>{t}</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          </div>
+
+          <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="font-semibold">Deal structures I can consider</h3>
+              <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-600">
+                {[
+                  "100% acquisition",
+                  "Majority with founder rollover",
+                  "Asset purchase (case-by-case)",
+                  "Seller financing / earn-out (if aligned)",
+                ].map((t) => (
+                  <div key={t} className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 mt-0.5 text-slate-700" />
+                    <span>{t}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="font-semibold">Not a fit</h3>
+              <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-600">
+                {[
+                  "Heavily distressed turnarounds",
+                  "Highly regulated / licensed (unless simple)",
+                  "Large capex-heavy operations",
+                  "Litigation-heavy situations",
+                ].map((t) => (
+                  <div key={t} className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 mt-0.5 text-slate-700" />
+                    <span>{t}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-3 text-xs text-slate-500">
+                If unsure, still reach out - many deals are nuanced.
+              </div>
+            </div>
+          </div>
+        </Section>
+
+        {/* Value */}
+        <Section
+          id="value"
+          title="What I bring"
+          subtitle="How I'll protect the business and create upside without breaking what works."
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <Card icon={ShieldCheck} title="Stability first">
+              A calm, pragmatic approach focused on continuity rather than disruption.
+              I'll focus on keeping service levels high, retaining key people, and
+              maintaining supplier relationships.
+            </Card>
+            <Card icon={LineChart} title="Practical growth">
+              Improve pricing discipline, pipeline management, and customer retention.
+              Build simple KPIs and routines that make performance visible.
+            </Card>
+            <Card icon={Handshake} title="People & culture">
+              Communicate clearly, empower managers, and build a culture of
+              accountability with low bureaucracy.
+            </Card>
+          </div>
+
+          <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h3 className="font-semibold">Typical value levers (example)</h3>
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                {
+                  title: "Sales execution",
+                  text: "Define ICP, improve lead handling, tighten bid/no-bid, and build repeatable outreach.",
+                },
+                {
+                  title: "Pricing & margins",
+                  text: "Clean price lists, reduce discount leakage, and align pricing to value delivered.",
+                },
+                {
+                  title: "Operations",
+                  text: "Streamline scheduling, reduce rework, and improve on-time delivery with simple SOPs.",
+                },
+                {
+                  title: "Cash & working capital",
+                  text: "Improve invoicing cadence, reduce aged receivables, and optimize inventory / purchasing.",
+                },
+              ].map((x) => (
+                <div
+                  key={x.title}
+                  className="rounded-2xl border border-slate-200 bg-slate-50 p-5"
+                >
+                  <div className="text-sm font-semibold">{x.title}</div>
+                  <div className="mt-1 text-sm text-slate-600">{x.text}</div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 text-xs text-slate-500">
+              I tailor the plan to each business - this is not a one-size-fits-all
+              playbook.
+            </div>
+          </div>
+        </Section>
+
+        {/* Process */}
+        <Section
+          id="process"
+          title="My process"
+          subtitle="A transparent, founder-friendly pathway from first call to close."
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            {[
+              {
+                icon: Phone,
+                title: "1) Intro call (20-30 mins)",
+                text: "High-level fit, goals, timing, and what matters most to you.",
+              },
+              {
+                icon: ShieldCheck,
+                title: "2) NDA + initial info",
+                text: "Review a few essentials (financials, overview, customer mix).",
+              },
+              {
+                icon: Search,
+                title: "3) Indicative offer",
+                text: "Clear valuation range and proposed structure; fast feedback.",
+              },
+              {
+                icon: Handshake,
+                title: "4) Diligence + close",
+                text: "Focused diligence, financing confirmed, legal docs, handover plan.",
+              },
+            ].map((s) => {
+              const Icon = s.icon;
+              return (
+                <div
+                  key={s.title}
+                  className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-2">
+                      <Icon className="h-5 w-5 text-slate-700" />
+                    </div>
+                    <div className="text-sm font-semibold">{s.title}</div>
+                  </div>
+                  <div className="mt-3 text-sm text-slate-600 leading-relaxed">
+                    {s.text}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="font-semibold">What I typically need early</h3>
+              <ul className="mt-3 space-y-2 text-sm text-slate-600">
+                {[
+                  "Last 3 years P&L and current YTD",
+                  "High-level customer split (top 10 + concentration)",
+                  "Team/org overview and founder involvement",
+                  "A short overview of services/products and key differentiators",
+                ].map((t) => (
+                  <li key={t} className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 mt-0.5 text-slate-700" />
+                    <span>{t}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="font-semibold">What you can expect from me</h3>
+              <ul className="mt-3 space-y-2 text-sm text-slate-600">
+                {[
+                  "Fast responses and clear next steps",
+                  "Respectful approach with minimal disruption",
+                  "No shopping your deal; I'm the end buyer",
+                  "A transition plan that protects employees and customers",
+                ].map((t) => (
+                  <li key={t} className="flex items-start gap-2">
+                    <CheckCircle2 className="h-4 w-4 mt-0.5 text-slate-700" />
+                    <span>{t}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Section>
+
+        {/* Contact */}
+        <Section
+          id="contact"
+          title="Contact"
+          subtitle="If you have a potential opportunity, send a short note and I'll reply quickly."
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="lg:col-span-7 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <div className="text-xs text-slate-600">Email</div>
+                  <div className="mt-1 text-sm font-semibold">[you@email.com]</div>
+                  <div className="mt-1 text-xs text-slate-500">
+                    Preferred for first contact
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <div className="text-xs text-slate-600">Phone</div>
+                  <div className="mt-1 text-sm font-semibold">[+44 ...]</div>
+                  <div className="mt-1 text-xs text-slate-500">Optional</div>
+                </div>
+              </div>
+
+              <div className="mt-4 rounded-2xl border border-slate-200 p-4">
+                <div className="text-sm font-semibold">What to include</div>
+                <div className="mt-2 text-sm text-slate-600">
+                  Company name (or anonymised), location, rough size (revenue/EBITDA),
+                  and why you're considering a sale.
+                </div>
+              </div>
+
+              <div className="mt-4 flex flex-col sm:flex-row gap-3">
+                <a
+                  href="mailto:[you@email.com]?subject=Business%20sale%20opportunity"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-slate-800"
+                >
+                  <Mail className="h-4 w-4" />
+                  Email me
+                </a>
+                <a
+                  href="#criteria"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm hover:bg-slate-50"
+                >
+                  Re-check fit
+                </a>
+              </div>
+
+              <div className="mt-5 text-xs text-slate-500">
+                I'm happy to work with brokers and intermediaries.
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 grid gap-4">
+              <Card icon={MapPin} title="Location">
+                Based in Reading, UK. Open to opportunities across the UK.
+              </Card>
+              <Card icon={ShieldCheck} title="Confidentiality">
+                No outreach to employees, customers, or suppliers without explicit
+                permission.
+              </Card>
+              <Card icon={Handshake} title="Transition">
+                If you want, we can structure a handover so you can exit gradually and
+                confidently.
+              </Card>
+            </div>
+          </div>
+        </Section>
+
+        {/* Footer */}
+        <footer className="border-t border-slate-200 bg-white">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="text-sm text-slate-600">© {year} Sahasra.</div>
+            <div className="text-xs text-slate-500 max-w-2xl">
+              Disclaimer: This page is for informational purposes only and does not
+              constitute an offer to buy or sell securities. Any transaction is subject
+              to diligence and definitive agreements.
+            </div>
+          </div>
+        </footer>
+      </main>
+    </div>
+  );
+}
